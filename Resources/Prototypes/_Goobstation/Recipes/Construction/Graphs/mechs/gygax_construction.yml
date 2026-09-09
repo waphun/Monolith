@@ -115,7 +115,7 @@
           key: "enum.MechAssemblyVisuals.State"
           data: 13
 
-      - material: Steel #Composite armour plates
+      - material: Steel #actually we chilll
         amount: 5
         completed:
         - !type:VisualizerDataInt
@@ -136,7 +136,7 @@
           key: "enum.MechAssemblyVisuals.State"
           data: 18
 
-      - tag: MechAirTank
+      - tag: MechAirTank #after this add a motor
         name: exosuit air tank
         icon:
           sprite: Objects/Specific/Mech/mecha_equipment.rsi
