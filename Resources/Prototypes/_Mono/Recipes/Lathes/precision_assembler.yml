@@ -366,3 +366,20 @@
     ComponentBrickEconomy1: 1 # replace this with something fitting one day
   reagents:
     Bleach: 20
+
+#Mech Armours
+- type: latheRecipe
+  id: GygaxArmor
+  result: GygaxArmorPlate
+  completetime: 30  
+  entities:
+    ArmorPlateEconomy2: 1
+    ComponentBrickEconomy1: 1
+    
+- type: latheRecipe
+  id: DurandArmor
+  result: DurandArmorPlate
+  completetime: 30
+  entities:
+    ArmorPlateEconomy3: 1
+    ComponentBrickEconomy1: 1
