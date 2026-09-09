@@ -11,7 +11,7 @@
   id: DurandMechParts
   recipes:
   - DurandHarness
-  - DurandArmor
+  #- DurandArmor - Mono, industry mechs
   - DurandHead
   - DurandLArm
   - DurandLLeg
@@ -22,7 +22,7 @@
   id: GygaxMechParts
   recipes:
   - GygaxHarness
-  - GygaxArmor
+  #- GygaxArmor - Mono, industry mechs
   - GygaxHead
   - GygaxLArm
   - GygaxLLeg
