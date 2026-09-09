@@ -64,13 +64,13 @@
     Glass: 2000
     Silver: 1500
 
-- type: latheRecipe
-  id: DurandArmor
-  result: DurandArmorPlate
-  completetime: 10
-  materials:
-    Steel: 3000
-    Silver: 900
+#- type: latheRecipe
+#  id: DurandArmor
+#  result: DurandArmorPlate
+#  completetime: 10
+#  materials:
+#    Steel: 3000
+#    Silver: 900
 
 - type: latheRecipe
   id: DurandHead
@@ -123,12 +123,12 @@
     Steel: 2500
     Glass: 2000
 
-- type: latheRecipe
-  id: GygaxArmor
-  result: GygaxArmorPlate
-  completetime: 10
-  materials:
-    Steel: 3000
+#- type: latheRecipe
+#  id: GygaxArmor
+#  result: GygaxArmorPlate
+#  completetime: 10
+#  materials:
+#    Steel: 3000
 
 - type: latheRecipe
   id: GygaxHead
