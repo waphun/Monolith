@@ -63,7 +63,7 @@
           key: "enum.MechAssemblyVisuals.State"
           data: 7
 
-      - tag: GygaxTargetingControlModule
+      - tag: GygaxTargetingControlModule #after this indutry optics
         name: gygax weapon control and targeting module
         icon:
           sprite: "Objects/Misc/module.rsi"
@@ -80,7 +80,7 @@
           key: "enum.MechAssemblyVisuals.State"
           data: 9
 
-      - tag: CapacitorStockPart
+      - tag: CapacitorStockPart #after this some industry electronics, like tier 1-2 industry magents? should keep it consistent with all other mechs though
         name: capacitor
         icon:
           sprite: Objects/Misc/stock_parts.rsi
@@ -115,7 +115,7 @@
           key: "enum.MechAssemblyVisuals.State"
           data: 13
 
-      - material: Steel
+      - material: Steel #Composite armour plates
         amount: 5
         completed:
         - !type:VisualizerDataInt
