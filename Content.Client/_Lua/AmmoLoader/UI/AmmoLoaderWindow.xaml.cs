@@ -68,7 +68,7 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
     private InfoMode _infoMode = InfoMode.None;
     private int _maxConnections = DefaultTurretColumns;
     private bool _dragMouseHeld;
-    private bool _dragFromQuick;
+    /*private bool _dragFromQuick;*/
     private bool _dragFromTurretSlot;
     private bool _dragFromEmpty;
     private int _dragQuickSlot = -1;
@@ -90,7 +90,9 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
             MouseFilter = MouseFilterMode.Ignore,
         };
         ConfigurePrototypeIcon(_dragShadow);
+        /*
         EjectAllButton.OnPressed += _ => EjectQuickUnloadQueue();
+        */
         UnloadOneButton.OnPressed += _ => OnUnloadPressed();
         ConfigurePrototypeIcon(SelectedIcon);
         LayoutContainer.SetAnchorAndMarginPreset(SelectedIcon, LayoutContainer.LayoutPreset.Wide, margin: 34);
@@ -121,7 +123,7 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
             var loaded = GetSelectedTurretState()?.LoadedAmmoPrototype;
             if (loaded == null) return;
             SelectTurretLoadedAmmo(loaded.Value);
-            _dragFromQuick = false;
+            /*_dragFromQuick = false;*/
             _dragFromTurretSlot = true;
             _dragQuickSlot = -1;
             _dragMouseHeld = true;
@@ -143,7 +145,7 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
     {
         base.ExitedTree();
         _dragMouseHeld = false;
-        _dragFromQuick = false;
+        /*_dragFromQuick = false;*/
         _dragFromTurretSlot = false;
         _dragFromEmpty = false;
         _dragQuickSlot = -1;
@@ -157,28 +159,30 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
         _dragHelper.Update(args.DeltaSeconds);
         if (!_dragMouseHeld) return;
         if (_input.IsKeyDown(Key.MouseLeft)) return;
+        //if (_input.IsKeyDown(Key.Shift)) return; for quick loading
+        //if (_input.IsKeyDown(Key.Alt)) return; for quick loading
         var wasDragging = _dragHelper.IsDragging;
         var dragged = _dragHelper.Dragged;
         var mouse = UserInterfaceManager.MousePositionScaled.Position;
-        var overQuick = QuickUnloadPanel.GlobalRect.Contains(mouse);
+        //var overQuick = QuickUnloadPanel.GlobalRect.Contains(mouse);
         var overStorage = StoragePanel.GlobalRect.Contains(mouse);
         var turretMode = _selectedTurret != null && _infoMode is (InfoMode.Turret or InfoMode.TurretLoadedAmmo);
         var overTurretDrop = turretMode && TurretLoadedSection.Visible && (TurretLoadedSlot.GlobalRect.Contains(mouse) || TurretLoadedSection.GlobalRect.Contains(mouse) || InfoPanel.GlobalRect.Contains(mouse));
         _dragMouseHeld = false;
         if (wasDragging && dragged != null)
         {
-            if (_dragFromQuick)
+            /*if (_dragFromQuick)
             { HandleQuickDragEnd(overQuick); }
-            else if (_dragFromTurretSlot)
+            else*/ if (_dragFromTurretSlot)
             { if (overStorage) TryUnloadSelectedTurret(); }
             else if (overTurretDrop)
             { if (!_dragFromEmpty) TryLoadSelectedTurret(dragged); }
-            else if (overQuick)
-            { TryStageQuickUnload(dragged); }
+            /*else if (overQuick)
+            { TryStageQuickUnload(dragged); }*/
         }
-        else if (!wasDragging && !_dragFromQuick && !_dragFromTurretSlot && dragged != null && _selectedTurret != null && _infoMode is (InfoMode.Turret or InfoMode.TurretLoadedAmmo))
+        else if (!wasDragging /*&& !_dragFromQuick*/ && !_dragFromTurretSlot && dragged != null && _selectedTurret != null && _infoMode is (InfoMode.Turret or InfoMode.TurretLoadedAmmo))
         { SelectStorageAmmo(new EntProtoId(dragged), _dragFromEmpty); }
-        _dragFromQuick = false;
+        /*_dragFromQuick = false;*/
         _dragFromTurretSlot = false;
         _dragFromEmpty = false;
         _dragQuickSlot = -1;
@@ -220,7 +224,9 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
         PruneQuickUnloadAgainstStorage();
         RefreshQuickUnloadVisuals();
         RefreshSelectionPanel();
+        /*
         UpdateEjectButtonState();
+        */
         RefreshTurretSelectionBorders();
     }
 
@@ -261,7 +267,7 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
 
     private void BuildQuickUnloadSlots()
     {
-        QuickUnloadSlots.DisposeAllChildren();
+        //QuickUnloadSlots.DisposeAllChildren();
         _quickSlots.Clear();
         _quickIcons.Clear();
         for (var i = 0; i < QuickUnloadSlotCount; i++)
@@ -297,18 +303,18 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
             {
                 if (args.Function != EngineKeyFunctions.UIClick) return;
                 if (_quickQueue[slotIndex] is not { } protoId) return;
-                _dragFromQuick = true;
+                /*_dragFromQuick = true;*/
                 _dragFromTurretSlot = false;
                 _dragQuickSlot = slotIndex;
                 _dragMouseHeld = true;
                 _dragHelper.MouseDown(protoId);
                 args.Handle();
             };
-            slot.OnKeyBindUp += args =>
+            /*slot.OnKeyBindUp += args =>
             { if (args.Function == EngineKeyFunctions.UIClick) args.Handle(); };
             QuickUnloadSlots.AddChild(slot);
             _quickSlots.Add(bg);
-            _quickIcons.Add(icon);
+            _quickIcons.Add(icon);*/
         }
     }
 
@@ -397,7 +403,7 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
         {
             if (args.Function != EngineKeyFunctions.UIClick) return;
             if (_selectedTurret == null || _infoMode is not (InfoMode.Turret or InfoMode.TurretLoadedAmmo)) SelectStorageAmmo(protoId, isEmpty);
-            _dragFromQuick = false;
+            /*_dragFromQuick = false;*/
             _dragFromTurretSlot = false;
             _dragFromEmpty = isEmpty;
             _dragQuickSlot = -1;
@@ -480,7 +486,7 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
         return CompactAmmoLabel(label);
     }
 
-    private static string CompactAmmoLabel(string label)//shit code, mb any idea?
+    private static string CompactAmmoLabel(string label)//shit code, mb any idea? lol, lmao even
     {
         label = RemovePrefix(label, "магазин ");
         label = RemovePrefix(label, "ящик ");
@@ -654,9 +660,12 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
         if (_dragQuickSlot < 0 || _dragQuickSlot >= _quickQueue.Length) return;
         if (!overQuick) _quickQueue[_dragQuickSlot] = null;
         RefreshQuickUnloadVisuals();
+        /*
         UpdateEjectButtonState();
+    */
     }
 
+    /*
     private bool TryStageQuickUnload(string prototypeId)
     {
         if (IsTypeStaged(prototypeId)) return false;
@@ -671,8 +680,9 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
         }
         return false;
     }
+    */
 
-    private void EjectQuickUnloadQueue()
+    /*private void EjectQuickUnloadQueue()
     {
         var stagedTypes = new List<string>();
         foreach (var id in _quickQueue)
@@ -688,7 +698,7 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
         Array.Clear(_quickQueue);
         RefreshQuickUnloadVisuals();
         UpdateEjectButtonState();
-    }
+    }*/
 
     private void PruneQuickUnloadAgainstStorage()
     {
@@ -765,7 +775,7 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
         }
     }
 
-    private void UpdateEjectButtonState()
+    /*private void UpdateEjectButtonState()
     {
         var hasStaged = false;
         foreach (var id in _quickQueue)
@@ -775,7 +785,7 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
             break;
         }
         EjectAllButton.Disabled = !hasStaged;
-    }
+    }*/
 
     private bool IsTypeStaged(string prototypeId)
     {
@@ -835,7 +845,9 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
         if (_dragHelper.Dragged is not { } dragged) return false;
         _dragShadow.SetPrototype(dragged);
         _dragShadow.Visible = true;
+        /*
         SetQuickUnloadHighlight(true);
+        */
         SetStorageHighlight(false);
         SetTurretLoadedHighlight(false);
         return true;
@@ -848,7 +860,9 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
         if (_dragFromTurretSlot)
         {
             SetStorageHighlight(StoragePanel.GlobalRect.Contains(mouse.Position));
+            /*
             SetQuickUnloadHighlight(false);
+            */
             SetTurretLoadedHighlight(false);
         }
         else
@@ -859,7 +873,9 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
                                  (TurretLoadedSlot.GlobalRect.Contains(mouse.Position) ||
                                   TurretLoadedSection.GlobalRect.Contains(mouse.Position) ||
                                   InfoPanel.GlobalRect.Contains(mouse.Position));
+            /*
             SetQuickUnloadHighlight(QuickUnloadPanel.GlobalRect.Contains(mouse.Position));
+            */
             SetStorageHighlight(false);
             SetTurretLoadedHighlight(overTurretDrop);
         }
@@ -871,12 +887,14 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
     {
         _dragShadow.Visible = false;
         _dragShadow.SetPrototype(null);
+        /*
         SetQuickUnloadHighlight(false);
+        */
         SetStorageHighlight(false);
         SetTurretLoadedHighlight(false);
     }
 
-    private void SetQuickUnloadHighlight(bool active)
+    /*private void SetQuickUnloadHighlight(bool active)
     {
         QuickUnloadPanel.PanelOverride = new StyleBoxFlat
         {
@@ -885,7 +903,7 @@ public sealed partial class AmmoLoaderWindow : FancyWindow
             BorderThickness = new Thickness(2),
         };
         for (var i = 0; i < _quickSlots.Count; i++) _quickSlots[i].PanelOverride = MakeSlotStyle(active && _quickQueue[i] == null);
-    }
+    }*/
 
     private void SetStorageHighlight(bool active)
     {
